@@ -1,4 +1,4 @@
-import { ExtensionContext, workspace } from 'vscode';
+import { ExtensionContext, ConfigurationChangeEvent, workspace, window } from 'vscode';
 import {
     LanguageClient,
     LanguageClientOptions,
@@ -8,11 +8,8 @@ import {
 
 let client: LanguageClient | undefined;
 
-export function activateLanguageClient(context: ExtensionContext) {
-
-    if (client) {
-        return;
-    }
+export function activate(context: ExtensionContext) {
+    if (client) { return; }
 
     let configuration = workspace.getConfiguration("ink");
 
@@ -61,11 +58,29 @@ export function activateLanguageClient(context: ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
-export function deactivateLanguageClient(): Thenable<void> {
+export function deactivate(): Thenable<void> {
     if (!client) { return Promise.resolve(); }
 
     let localClient = client;
     client = undefined;
 
     return localClient.stop();
+}
+
+export function handleConfigurationChange(
+    event: ConfigurationChangeEvent,
+    context: ExtensionContext
+) {
+    if (event.affectsConfiguration('ink.useLanguageServer') ||
+        event.affectsConfiguration('ink.languageServer')) {
+        if (client) {
+            deactivate().then(() => {
+                activate(context);
+            }, () => {
+                window.showErrorMessage('Could not restart the Language Server for ink.');
+            });
+        } else {
+            activate(context);
+        }
+    }
 }

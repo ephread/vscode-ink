@@ -1,27 +1,19 @@
 // The module 'vscode' contains the VS Code extensibility API.
 // Import the module and reference it with the alias vscode in your code below.
-import * as vscode from 'vscode';
-import { activateLanguageClient, deactivateLanguageClient } from "./client";
+import { ExtensionContext, workspace } from 'vscode';
+import * as languageClient from "./client";
 
 // This method is called when your extension is activated
 // your extension is activated the very first time the command is executed.
-export function activate(context: vscode.ExtensionContext) {
-    activateLanguageClient(context);
+export function activate(context: ExtensionContext) {
+    languageClient.activate(context);
 
-    vscode.workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration('ink.useLanguageServer')) {
-            let configuration = vscode.workspace.getConfiguration('ink');
-            let useLanguageServer: boolean = configuration.get('useLanguageServer', false);
-            if (useLanguageServer) {
-                activateLanguageClient(context);
-            } else {
-                deactivateLanguageClient();
-            }
-        }
+    workspace.onDidChangeConfiguration(event => {
+        languageClient.handleConfigurationChange(event, context);
     });
 }
 
 // This method is called when your extension is deactivated.
 export function deactivate(): Thenable<void> {
-    return deactivateLanguageClient();
+    return languageClient.deactivate();
 }
