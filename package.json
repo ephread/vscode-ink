@@ -52,11 +52,17 @@
                     "default": "inklecate",
                     "description": "Path to the inklecate executable."
                 },
-                "ink.runThroughMono": {
+                "ink.useSpecificRuntime": {
                     "scope": "resource",
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enable to run through mono"
+                    "type": "string",
+                    "default": "none",
+                    "description": "You can run inklecate with a specific runtime. Make sure they are available on your system before selecting them.",
+                    "enum": ["none", "mono", "dotnet"],
+                    "enumDescriptions": [
+                        "Don't use a specific runtime (Windows only)",
+                        "Mono (mono)",
+                        ".NET Core (dotnet)"
+                    ]
                 }
             }
         }

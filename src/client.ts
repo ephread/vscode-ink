@@ -10,17 +10,24 @@ let client: LanguageClient;
 
 export function activateLanguageClient(context: ExtensionContext) {
 
-    const inklecatePath = workspace.getConfiguration("ink").get("inklecatePath", "inklecate");
-    const runThroughMono = workspace.getConfiguration("ink").get("runThroughMono", false);
+    let configuration = workspace.getConfiguration("ink");
+
+    const inklecatePath: string = configuration.get('inklecatePath', 'inklecate');
+    const useSpecificRuntime: string = configuration.get('useSpecificRuntime', 'none');
 
     let run: Executable;
-    if (runThroughMono) {
+    let debug: Executable;
+
+    if (useSpecificRuntime === 'dotnet') {
+        run = { command: 'dotnet', args: [inklecatePath, '-s'] };
+        debug = run;
+    } else if (useSpecificRuntime === "mono") {
         run = { command: 'mono', args: [inklecatePath, '-s'] };
+        debug = { command: 'mono', args: ['--debug', inklecatePath, '-s'] };
     } else {
         run = { command: inklecatePath, args: ['-s'] };
+        debug = run;
     }
-
-    let debug: Executable = run;
 
     // If the extension is launched in debug mode then the debug server options are used
     // otherwise the run options are used.
@@ -29,7 +36,7 @@ export function activateLanguageClient(context: ExtensionContext) {
         debug: debug
     };
 
-    // Options to control the language client
+    // Options to control the language client.
     const clientOptions: LanguageClientOptions = {
         // The server only supports the `file` scheme.
         documentSelector: [{scheme: 'file', language: 'ink'}],
