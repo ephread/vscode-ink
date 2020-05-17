@@ -7,6 +7,18 @@ import { activateLanguageClient, deactivateLanguageClient } from "./client";
 // your extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext) {
     activateLanguageClient(context);
+
+    vscode.workspace.onDidChangeConfiguration(event => {
+        if (event.affectsConfiguration('ink.useLanguageServer')) {
+            let configuration = vscode.workspace.getConfiguration('ink');
+            let useLanguageServer: boolean = configuration.get('useLanguageServer', false);
+            if (useLanguageServer) {
+                activateLanguageClient(context);
+            } else {
+                deactivateLanguageClient();
+            }
+        }
+    });
 }
 
 // This method is called when your extension is deactivated.

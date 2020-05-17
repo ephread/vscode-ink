@@ -40,19 +40,25 @@
         "configuration": {
             "title": "Ink",
             "properties": {
-                "ink.mainStoryPath": {
+                "ink.useLanguageServer": {
+                    "scope": "resource",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Use the experimental language server (this feature requires a version of inklecate with LSP support)."
+                },
+                "ink.languageServer.mainFilePath": {
                     "scope": "resource",
                     "type": "string",
                     "default": "",
                     "description": "Path to the main ink file, relative to the root of your workspace."
                 },
-                "ink.inklecatePath": {
+                "ink.languageServer.inklecatePath": {
                     "scope": "resource",
                     "type": "string",
                     "default": "inklecate",
                     "description": "Path to the inklecate executable."
                 },
-                "ink.useSpecificRuntime": {
+                "ink.languageServer.useSpecificRuntime": {
                     "scope": "resource",
                     "type": "string",
                     "default": "none",

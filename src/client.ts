@@ -6,14 +6,24 @@ import {
     Executable
 } from 'vscode-languageclient';
 
-let client: LanguageClient;
+let client: LanguageClient | undefined;
 
 export function activateLanguageClient(context: ExtensionContext) {
 
+    if (client) {
+        return;
+    }
+
     let configuration = workspace.getConfiguration("ink");
 
-    const inklecatePath: string = configuration.get('inklecatePath', 'inklecate');
-    const useSpecificRuntime: string = configuration.get('useSpecificRuntime', 'none');
+    const useLanguageServer: boolean = configuration.get('useLanguageServer', false);
+
+    if (!useLanguageServer) {
+        return;
+    }
+
+    const inklecatePath: string = configuration.get('languageServer.inklecatePath', 'inklecate');
+    const useSpecificRuntime: string = configuration.get('languageServer.useSpecificRuntime', 'none');
 
     let run: Executable;
     let debug: Executable;
@@ -54,5 +64,8 @@ export function activateLanguageClient(context: ExtensionContext) {
 export function deactivateLanguageClient(): Thenable<void> {
     if (!client) { return Promise.resolve(); }
 
-    return client.stop();
+    let localClient = client;
+    client = undefined;
+
+    return localClient.stop();
 }
