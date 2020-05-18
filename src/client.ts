@@ -26,13 +26,13 @@ export function activate(context: ExtensionContext) {
     let debug: Executable;
 
     if (useSpecificRuntime === 'dotnet') {
-        run = { command: 'dotnet', args: [inklecatePath, '-s'] };
+        run = { command: 'dotnet', args: [inklecatePath, '-l'] };
         debug = run;
     } else if (useSpecificRuntime === "mono") {
-        run = { command: 'mono', args: [inklecatePath, '-s'] };
-        debug = { command: 'mono', args: ['--debug', inklecatePath, '-s'] };
+        run = { command: 'mono', args: [inklecatePath, '-l'] };
+        debug = { command: 'mono', args: ['--debug', inklecatePath, '-l'] };
     } else {
-        run = { command: inklecatePath, args: ['-s'] };
+        run = { command: inklecatePath, args: ['-l'] };
         debug = run;
     }
 
