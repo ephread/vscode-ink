@@ -1,5 +1,14 @@
+window.onload = () => {
+    let vscode = acquireVsCodeApi();
+    vscode.postMessage({
+        type: 'load'
+    });
+};
+
 window.addEventListener('message', messageEvent => {
     const message = messageEvent.data;
+
+    console.log('executed!');
 
     if (message.command !== 'updateStatistics') { return; }
 

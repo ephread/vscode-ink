@@ -15,8 +15,19 @@ body {
 h1 {
     font-size: 1.5em;
     font-weight: normal;
+    margin: 0;
+    margin-bottom: 0.25em;
 
     color: var(--vscode-tab-activeForeground);
+}
+
+h2 {
+    font-size: 1.3em;
+    margin: 0;
+    margin-bottom: 1em;
+    color: var(--vscode-tab-unfocusedActiveForeground);
+
+    font-weight: normal;
 }
 
 ul {
@@ -36,7 +47,7 @@ li {
 }
 
 .tile {
-    width: 18.75em;
+    width: 16em;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -78,7 +89,7 @@ li {
     margin-left: 1em;
 }
 
-.content h2 {
+.content h3 {
     font-size: 1.3em;
     margin: 0;
     margin-bottom: 0.5em;

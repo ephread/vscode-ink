@@ -26,7 +26,7 @@
         "test": "node ./out/test/runTest.js",
         "vscode:prepublish": "npm run compile",
         "watch": "tsc -watch -p ./",
-        "watch:webviews": "npm run-script compile:webviews && chokidar 'webviews/**/*' -c 'npm run-script compile:webviews'"
+        "watch:webviews": "npm run-script compile:webviews && chokidar 'src/webviews/**' -c 'npm run-script compile:webviews'"
     },
     "contributes": {
         "configuration": {

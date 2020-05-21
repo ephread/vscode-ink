@@ -6,18 +6,18 @@ import { StatisticsParams, Statistics } from './types';
 const statisticsCommandId = 'ink.showStatistics';
 let wordsStatusbarItem: vscode.StatusBarItem;
 let statistics: Statistics | undefined;
-let mainFileUri: vscode.Uri | undefined;
+let mainDocumentUri: vscode.Uri | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand(statisticsCommandId, () => {
-            if (statistics && mainFileUri) {
-                StatisticsPanel.createOrShow(context.extensionPath, statistics, mainFileUri);
+            if (statistics && mainDocumentUri) {
+                StatisticsPanel.createOrShow(context.extensionPath, statistics, mainDocumentUri);
             }
         })
     );
 
-    wordsStatusbarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 10000);
+    wordsStatusbarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1000);
     wordsStatusbarItem.command = statisticsCommandId;
     context.subscriptions.push(wordsStatusbarItem);
 
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function registerStatisticsNotification(client: LanguageClient) {
     client.onNotification("story/statistics", (params: StatisticsParams) => {
         statistics = params.statistics;
-        mainFileUri = vscode.Uri.parse(params.mainFileUri, true);
+        mainDocumentUri = vscode.Uri.parse(params.mainDocumentUri, true);
         updateStatusBarItem();
     });
 }

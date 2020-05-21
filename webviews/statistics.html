@@ -21,8 +21,19 @@ body {
 h1 {
     font-size: 1.5em;
     font-weight: normal;
+    margin: 0;
+    margin-bottom: 0.25em;
 
     color: var(--vscode-tab-activeForeground);
+}
+
+h2 {
+    font-size: 1.3em;
+    margin: 0;
+    margin-bottom: 1em;
+    color: var(--vscode-tab-unfocusedActiveForeground);
+
+    font-weight: normal;
 }
 
 ul {
@@ -42,7 +53,7 @@ li {
 }
 
 .tile {
-    width: 18.75em;
+    width: 16em;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -84,7 +95,7 @@ li {
     margin-left: 1em;
 }
 
-.content h2 {
+.content h3 {
     font-size: 1.3em;
     margin: 0;
     margin-bottom: 0.5em;
@@ -104,7 +115,8 @@ li {
 </head>
 
 <body>
-    <h1>Story Overview (<span class="story-title"></span>)</h1>
+    <h1>Story Overview</h1>
+    <h2 span class="story-title"></h2>
     <ul>
         <li class="tile">
             <div class="icon-wrapper">
@@ -113,7 +125,7 @@ li {
                 </svg>
             </div>
             <div class="content">
-                <h2>Words</h2>
+                <h3>Words</h3>
                 <span class="number words-number">0</span>
             </div>
         </li>
@@ -125,7 +137,7 @@ li {
                 </svg>
             </div>
             <div class="content">
-                <h2>Knots</h2>
+                <h3>Knots</h3>
                 <span class="number knots-number">0</span>
             </div>
         </li>
@@ -137,7 +149,7 @@ li {
                 </svg>
             </div>
             <div class="content">
-                <h2>Stitches</h2>
+                <h3>Stitches</h3>
                 <span class="number stitches-number">0</span>
             </div>
         </li>
@@ -149,7 +161,7 @@ li {
                 </svg>
             </div>
             <div class="content">
-                <h2>Functions</h2>
+                <h3>Functions</h3>
                 <span class="number functions-number">0</span>
             </div>
         </li>
@@ -161,7 +173,7 @@ li {
                   </svg>
             </div>
             <div class="content">
-                <h2>Choices</h2>
+                <h3>Choices</h3>
                 <span class="number choices-number">0</span>
             </div>
         </li>
@@ -173,7 +185,7 @@ li {
                 </svg>
             </div>
             <div class="content">
-                <h2>Gathers</h2>
+                <h3>Gathers</h3>
                 <span class="number gathers-number">0</span>
             </div>
         </li>
@@ -185,13 +197,22 @@ li {
                   </svg>
             </div>
             <div class="content">
-                <h2>Diverts</h2>
+                <h3>Diverts</h3>
                 <span class="number diverts-number">0</span>
             </div>
         </li>
     </ul>
-    <script>window.addEventListener('message', messageEvent => {
+    <script>window.onload = () => {
+    let vscode = acquireVsCodeApi();
+    vscode.postMessage({
+        type: 'load'
+    });
+};
+
+window.addEventListener('message', messageEvent => {
     const message = messageEvent.data;
+
+    console.log('executed!');
 
     if (message.command !== 'updateStatistics') { return; }
 

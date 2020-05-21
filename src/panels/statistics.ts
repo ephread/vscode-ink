@@ -28,6 +28,7 @@ export class StatisticsPanel {
         if (StatisticsPanel.currentPanel) {
             StatisticsPanel.currentPanel._statistics = statistics;
             StatisticsPanel.currentPanel._storyName = storyName;
+            StatisticsPanel.currentPanel._updateValuesInWebview();
             StatisticsPanel.currentPanel.reveal(column);
             return;
         }
@@ -66,6 +67,11 @@ export class StatisticsPanel {
         this._update();
         this._updateValuesInWebview();
 
+
+        this._panel.webview.onDidReceiveMessage((message) => {
+            this._updateValuesInWebview();
+        }, null, this._disposables);
+
         // Listen for when the panel is disposed
         // This happens when the user closes the panel
         // or when the panel is closed programatically
@@ -87,7 +93,6 @@ export class StatisticsPanel {
     }
 
     public reveal(viewColumn?: vscode.ViewColumn, preserveFocus?: boolean) {
-        this._updateValuesInWebview();
         this._panel.reveal(viewColumn, preserveFocus);
     }
 

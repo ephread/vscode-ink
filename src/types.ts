@@ -1,7 +1,7 @@
 
 export interface StatisticsParams {
     workspaceUri: string;
-    mainFileUri: string;
+    mainDocumentUri: string;
     statistics: Statistics;
 }
 
