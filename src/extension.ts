@@ -2,11 +2,13 @@
 // Import the module and reference it with the alias vscode in your code below.
 import { ExtensionContext, workspace } from 'vscode';
 import * as languageClient from "./client";
+import * as statistics from "./statistics";
 
 // This method is called when your extension is activated
 // your extension is activated the very first time the command is executed.
 export function activate(context: ExtensionContext) {
     languageClient.activate(context);
+    statistics.activate(context);
 
     workspace.onDidChangeConfiguration(event => {
         languageClient.handleConfigurationChange(event, context);

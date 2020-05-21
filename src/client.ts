@@ -5,6 +5,8 @@ import {
     ServerOptions,
     Executable
 } from 'vscode-languageclient';
+import { registerStatisticsNotification } from './statistics';
+
 
 let client: LanguageClient | undefined;
 
@@ -53,6 +55,8 @@ export function activate(context: ExtensionContext) {
     // Create the language client and start the client.
     client = new LanguageClient('inkLanguage', 'Ink Language Server', serverOptions, clientOptions);
 
+    client.onReady().then(registerNotifications);
+
     // Start the client. This will also launch the server.
     let disposable = client.start();
     context.subscriptions.push(disposable);
@@ -83,4 +87,9 @@ export function handleConfigurationChange(
             activate(context);
         }
     }
+}
+
+function registerNotifications() {
+    if (!client) { return; }
+    registerStatisticsNotification(client);
 }
