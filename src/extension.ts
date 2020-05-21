@@ -17,5 +17,10 @@ export function activate(context: ExtensionContext) {
 
 // This method is called when your extension is deactivated.
 export function deactivate(): Thenable<void> {
-    return languageClient.deactivate();
+    return Promise.all([
+        languageClient.deactivate(),
+        statistics.deactivate()
+    ]).then(() => {
+        return Promise.resolve();
+    });
 }
