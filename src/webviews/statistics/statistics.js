@@ -8,8 +8,6 @@ window.onload = () => {
 window.addEventListener('message', messageEvent => {
     const message = messageEvent.data;
 
-    console.log('executed!');
-
     if (message.command !== 'updateStatistics') { return; }
 
     for (storyTitle of document.getElementsByClassName("story-title")) {
